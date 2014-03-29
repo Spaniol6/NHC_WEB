@@ -1,0 +1,116 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	padding: 0px;
+	margin: 0px;
+	background-color: #FFF;
+	font-family:Tahoma, Geneva, sans-serif;
+}
+
+ul{
+	margin-left:0px;
+	padding-left:0px;	
+}
+
+hr {
+	color: #ff0000;
+}
+
+#header {
+	position:relative;
+	height:100px;
+	width: 1254px;
+	background: #999;
+	border-style:solid;
+	border-color: #CCC;
+	border-width: 2px;
+	display:block;
+	padding-top: 25px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size:3em;
+	font-weight:bold;
+	color:#FF0000;
+	text-align:center;
+}
+
+#site-body {
+	position: relative;
+	height: auto;
+	width: 1260px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#footer {
+	color:#000;
+	position: absolute;
+	float: none;
+	display: block;
+	border-style:solid;
+	border-color: #CCC;
+	border-width: 2px;
+	min-height: 200px;
+	height:auto;
+	
+	width: 1254px;
+	top: 638px;
+	-moz-column-count:2;
+	-webkit-column-count:2;
+	column-count:2;
+	background: #999;
+}
+
+#map {
+	position: relative;
+	top: 0px;
+	float: left;
+	display: block;
+	border-style:solid;
+	border-color: #CCC;
+	border-width: 2px;
+	border-right:hidden;
+	border-left:hidden;
+	background: #999;
+}
+
+#info-list {
+	top: 0px;
+	color:#000;
+	position: relative;
+	float: left;
+	display: block;
+	width: 200px;
+	height: 636px;
+	border-style:solid;
+	border-color: #CCC;
+	border-width: 2px;
+	background: #999;
+}
+
+#title {
+	font-size:1.25em;
+}
+
+#rank-list {
+	top: 0px;
+	color:#000;
+	position: relative;
+	float: left;
+	display: block;
+	width: 200px;
+	height: 636px;
+	border-style:solid;
+	border-color: #CCC;
+	border-width: 2px;
+	overflow:auto;
+	background: #999;
+}
+
+.rankings {
+	positions:absolute;
+	width:150px;
+	left:0;
+	list-style-type:none;	
+}
