@@ -1,7 +1,5 @@
-<!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.sql.*" %>
-
 <html>
 <head>
 
@@ -11,12 +9,12 @@
 <script type="text/javascript" src="Scripts/map.js"></script>
 <script type="text/javascript" src="Scripts/function.js"></script>
 </head>
-
+<%!
+	String cStatus;
+%>
 <body onload="addFunctions()">
-
 	<%
-		String cStatus;
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		Class.forName("org.gjt.mm.mysql.Driver").newInstance();
 		String url = "jdbc:mysql://localhost:3306/";
 		ResultSet rs;
 		Statement stmt;
@@ -29,9 +27,7 @@
 		}catch(Exception ex){
 			cStatus = "Error: Can't connect to database";
 		}
-	
 	%>
-	
 	
 	<div id="header">
         National Health Challenge

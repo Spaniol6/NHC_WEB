@@ -4,7 +4,7 @@ var states = new Array("Alabama","Alaska","Arizona","Arkansas","California","Col
 function addFunctions(){
 	var paths = document.getElementsByClassName("map_object");
 	var text = document.getElementById('info-list');
-	document.getElementById("state_selected").innerHTML = "Select a state to view its stats";
+	//document.getElementById("state_selected").innerHTML = "Select a state to view its stats";
 	var i;
 	for (i = 0; i < paths.length; i++){
 		paths.item(i).setAttribute("onclick","stateSelect(this.id)");
