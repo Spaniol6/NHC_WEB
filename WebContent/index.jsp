@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html><!-- InstanceBegin template="/Templates/Template.dwt" codeOutsideHTMLIsLocked="false" -->
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.sql.*" %>
+
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- InstanceBeginEditable name="doctitle" -->
+
 <title>Home</title>
-<!-- InstanceEndEditable -->
-<!-- InstanceBeginEditable name="head" -->
-<!-- InstanceEndEditable -->
+
 <link href="Styles/styles.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="Scripts/map.js"></script>
 <script type="text/javascript" src="Scripts/function.js"></script>
 </head>
 
 <body onload="addFunctions()">
+
+	<%
+		String cStatus;
+		Class.forName("com.mysql.jdbc.Driver").newInstance();
+		String url = "jdbc:mysql://localhost:3306/";
+		ResultSet rs;
+		Statement stmt;
+		Connection con;
+		try{
+			con = DriverManager.getConnection(url);
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("");
+			con.close();
+		}catch(Exception ex){
+			cStatus = "Error: Can't connect to database";
+		}
+	
+	%>
+	
+	
 	<div id="header">
         National Health Challenge
     </div>
@@ -187,10 +207,12 @@
         <div id="info-list">
         	<span id="title">State Statistics</span>
             <hr />
-        	<!-- InstanceBeginEditable name="list" -->
-            <p id="state">State: <span id="state_selected"></span></p>
-            <p id="rank">Rank: <span id="rank_selected">1</span></p>
-<!-- InstanceEndEditable -->
+
+            <p id="state">State: <span id="state_selected">
+            <%out.print(cStatus);%>
+            </span></p>
+            <p id="rank">Rank: <span id="rank_selected"></span></p>
+
         </div>
         <div id="footer">
         	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
