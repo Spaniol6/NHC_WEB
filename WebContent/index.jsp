@@ -1,36 +1,110 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.Random" %>
+
 <html>
 <head>
 
-<title>Home</title>
-
-<link href="Styles/styles.css" rel="stylesheet" type="text/css" />
+<title>nhcgame</title>
 <script type="text/javascript" src="Scripts/map.js"></script>
 <script type="text/javascript" src="Scripts/function.js"></script>
+<link href="Styles/styles.css" rel="stylesheet" type="text/css" />
 </head>
 <%!
-	String cStatus;
+	int j = 0;
+	String cStatus = "";
+	int[] ranks = new int[51];
+	String[] states = {"Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","DC","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota","Tennesse","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"};
+	String para = "";
+	String namp = "";
+	String points = "";
+	double spoints[] = new double[51];
+	String mpop = "";
+	String fpop = "";
 %>
 <body onload="addFunctions()">
 	<%
 		Class.forName("org.gjt.mm.mysql.Driver").newInstance();
-		String url = "jdbc:mysql://localhost:3306/";
+		String url = "jdbc:mysql://128.6.29.222:3306/nhcgame?user=root&password=TheoMensah";
 		ResultSet rs;
-		Statement stmt;
+		ResultSet rs1;
+		ResultSet rs2;
+		PreparedStatement stmt;
+		PreparedStatement stmt1;
+		PreparedStatement stmt2;
 		Connection con;
+		
+		String usernames;
+        double epoints;
+        
+		Random rand = new Random();
+        char alphabet[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+            '1','2','3','4','5','6','7','8','9','0'};
+        int slen = alphabet.length;
+        int uname_len;
+		
 		try{
 			con = DriverManager.getConnection(url);
-			stmt = con.createStatement();
-			rs = stmt.executeQuery("");
-			con.close();
-		}catch(Exception ex){
-			cStatus = "Error: Can't connect to database";
+			
+			try{
+				int i = 0;
+				
+				stmt = con.prepareStatement("SELECT * FROM Location ORDER BY state_name");
+				rs = stmt.executeQuery();
+				
+				stmt1 = con.prepareStatement("SELECT * FROM Distr ORDER BY s_name");
+				rs1 = stmt1.executeQuery();
+				
+				while(rs1.next()){
+					if(points!=""){
+						points = points + ",";
+						para = para + ",";
+					}
+					points = points + String.format("%.2f",rs1.getDouble("s_points"));
+					int ranking = rs1.getInt("s_rank");
+					para = para + ranking;
+				}
+				
+				while(rs.next()){
+					if(mpop!=""){
+						mpop = mpop + ",";
+					}
+					mpop = mpop + rs.getInt("total_players");
+				}
+				
+				stmt1 = con.prepareStatement("SELECT * FROM Distr ORDER BY s_rank");
+				rs = stmt1.executeQuery();
+				
+				while(rs.next()){
+					if(namp!="")
+						namp = namp + ",";	
+					String name = rs.getString("s_name");
+					namp = namp + name;
+				}
+				
+				con.close();
+				cStatus = "Select A State To View Its Stats";
+			}catch(Exception ex){
+				if(!con.isClosed()){
+					con.close();
+				}
+				cStatus = ex.getMessage();
+			}
+			
 		}
+		catch(Exception ex){
+			cStatus = ex.getMessage();
+		}
+		
 	%>
-	
+	<input type="hidden" name="val" id="val" value="<%=para %>"/>
+	<input type="hidden" name="nam" id="nam" value="<%=namp %>"/>
+	<input type="hidden" name="point" id="point" value="<%=points %>"/>
+	<input type="hidden" name="mpop" id="mpop" value="<%=mpop %>"/>
+	<input type="hidden" name="fpop" id="fpop" value="<%=fpop %>"/>
 	<div id="header">
-        National Health Challenge
+        National Health Challenge Game
     </div>
 	<div id="site-body">
     	<div id="rank-list">
@@ -208,12 +282,23 @@
             <%out.print(cStatus);%>
             </span></p>
             <p id="rank">Rank: <span id="rank_selected"></span></p>
+            <p id="rank">Points: <span id="points_selected"></span></p>
+            <p id="rank">Population: <span id="pop_selected"></span></p>
+            <p id="rank">Total Users: <span id="mpop_selected"></span></p>
 
         </div>
         <div id="footer">
-        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+        	<div id="left_text">
+        	<p>Welcome to the Nation Health Challenge website.  Here you may view the state rankings and each state's statistics. 
+        	This project was created by the 2014 ECE Capstone Group under the guidance of Dr. Ivan Marsic at Rutgers University. 
+        	Our full project description may be viewed <a href="http://128.6.29.222/">here</a></p>
+            </div>
+            <div id="right_text">
+            <p>As you can see, we are in the early stages of developing this application so it is not yet available on the Google Play store. 
+            The information displayed on this website at this time has been generated by a program that simulates users as a proof of concept for presentation purposes.
+            However, the application is fully capable of providing data, based off runkeeper, to the data base where all this information is calculated.</p>
+        	</div>
         </div>
     </div>
 </body>
-<!-- InstanceEnd --></html>
+</html>
